@@ -21,7 +21,31 @@ pipeline {
                     echo "Application version: ${params.appVersion}"
                 }
             } 
-        }    
+        }
+        stage('Init'){
+            steps{
+                sh """
+                    cd terraform
+                    terraform init
+                """
+            } 
+        }
+        stage('Plan'){
+            steps{
+                sh """
+                    cd terraform
+                    terraform plan -var="app_version=${params.appVersion}"
+                """
+            } 
+        }
+        // stage('Deploy'){
+        //     steps{
+        //         sh """
+        //             cd terraform
+        //             terraform plan
+        //         """
+        //     } 
+        // }       
     }
     post { 
         always { 
